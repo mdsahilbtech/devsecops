@@ -21,7 +21,7 @@ pipeline {
         
         stage('Checkout Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/MohamedZezo7/Advanced-E2E-DevSecOps-Three-tier-Project.git'
+                git branch: 'main', url: 'https://github.com/mdsahilbtech/devsecops.git'
             }
         }
         
@@ -91,15 +91,15 @@ pipeline {
 
         stage('Update Deployment file') {
             environment {
-                GIT_REPO_NAME = "Advanced-E2E-DevSecOps-Three-tier-Project "
-                GIT_USER_NAME = "MohamedZezo7"
+                GIT_REPO_NAME = "devsecops"
+                GIT_USER_NAME = "mdsahilbtech"
             }
             steps {
                 dir('Kubernetes-Manifests-file/Backend') {
                     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                         sh '''
-                            git config user.email "mohamedabdelazizk10@gmail.com"
-                            git config user.name "Mohamed Abdelaziz"
+                            git config user.email "mdsahilbtech@gmail.com"
+                            git config user.name "mdsahilbtech"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
                             imageTag=$(grep -oP '(?<=backend:)[^ ]+' deployment.yaml)
@@ -114,18 +114,4 @@ pipeline {
             }
         }
     }
-    post {
-    always {
-        script {
-            emailext attachLog: true,
-                subject: "'${currentBuild.result}'",
-                body: "Project: ${env.JOB_NAME}<br/>" +
-                    "Build Number: ${env.BUILD_NUMBER}<br/>" +
-                    "URL: ${env.BUILD_URL}<br/>",
-                to: 'mohamedabdelazizk10@gmail.com',  
-                attachmentsPattern: 'trivyfs-backend-job-*.txt , trivyimage-backend-job-*.txt'
-        }
-    }
-}
-
 }

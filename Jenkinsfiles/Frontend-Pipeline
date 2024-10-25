@@ -95,8 +95,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                         script {
                             sh '''
-                            git config user.email "mohamedabdelazizk10@gmail.com"
-                            git config user.name "Mohamed Abdelaziz"
+                            git config user.email "mdsahilbtech@gmail.com"
+                            git config user.name "mdsahilbtech"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
                             imageTag=$(grep -oP '(?<=frontend:)[^ ]+' deployment.yaml)
@@ -109,20 +109,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                emailext attachLog: true,
-                    subject: "'${currentBuild.result}'",
-                    body: "Project: ${env.JOB_NAME}<br/>" +
-                        "Build Number: ${env.BUILD_NUMBER}<br/>" +
-                        "URL: ${env.BUILD_URL}<br/>",
-                    to: 'mohamedabdelazizk10@gmail.com',
-                    attachmentsPattern: 'trivyfs-frontend*.txt, trivyimage*.txt'
             }
         }
     }
